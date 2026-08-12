@@ -1,220 +1,678 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="x-apple-disable-message-reformatting" />
-    <!--[if !mso]><!-->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!--<![endif]-->
-    <title>Clipping CGM</title>
-    
-    <style type="text/css">
-        body, table, td, div, p, a {
-            margin: 0;
-            padding: 0;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlaria Geral do Município</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0066ff;
+            --primary-dark: #0052cc;
+            --secondary: #1a1a2e;
+            --accent: #0052cc;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
         }
-        table, td {
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-            border-collapse: collapse;
-        }
-        img {
-            -ms-interpolation-mode: bicubic;
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            outline: none;
-            text-decoration: none;
-        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             background-color: #f5f7fa;
-            margin: 0;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* CABEÇALHO MODERNO COM GALERIA */
+        .hero-header {
+            position: relative;
+            height: 1000px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+        
+        .header-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 1;
+        }
+        
+        .header-slide.active {
+            opacity: 1;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 2;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 3;
+            color: white;
+            width: 100%;
+            padding: 3rem 0;
+        }
+        
+        .logo-container {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            transition: all 0.5s ease;
+            text-align: right;
+        }
+        
+        .logo-container img {
+            max-height: 200px;
+            width: auto;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,0.3));
+        }
+        
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.7s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Restante do CSS permanece igual ao anterior */
+        .news-section {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 2.5rem;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border-top: 4px solid var(--primary);
+            height: 100%;
+            position: relative;
+            min-height: 280px;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .news-body {
+            padding: 1.8rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .news-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            color: var(--secondary);
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+        
+        .news-meta {
+            display: flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .news-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid #f0f0f0;
+        }
+        
+        .news-source {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .news-date {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-left: auto;
+        }
+        
+        /* DESTAQUES INSTITUCIONAIS */
+        .highlights-section {
+            padding: 3rem 0;
+            background-color: #f9f9f9;
+        }
+        
+        .highlight-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            height: 100%;
+            position: relative;
+        }
+        
+        .highlight-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .highlight-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .highlight-content {
+            padding: 2rem;
+            background: white;
+        }
+        
+        .highlight-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .highlight-text {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-highlight {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-highlight:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* RODAPÉ */
+        .main-footer {
+            background: var(--secondary);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links h5 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .footer-links ul {
+            list-style: none;
             padding: 0;
         }
         
-        /* Fallback fonts para compatibilidade */
-        .titulo-noticia {
-            font-family: Arial, sans-serif;
-            font-weight: 700;
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
         
-        .subtitulo-noticia {
-            font-family:  Arial, sans-serif;
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero-header {
+                height: 500px;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-header {
+                height: 450px;
+                text-align: center;
+            }
+            
+            .header-content {
+                padding: 2rem 0;
+            }
+            
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-container {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-header {
+                height: 400px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .logo-container img {
+                max-height: 60px;
+            }
+
+            .highlight-image {
+                height: 200px;
+            }
+
+            .news-card {
+                min-height: 250px;
+            }
         }
     </style>
-    
-    <!--[if !mso]><!-->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <!--<![endif]-->
 </head>
-<body style="margin: 0; padding: 0; background-color: #f5f7fa; font-family: Arial, sans-serif;">
+<body>
+    <!-- CABEÇALHO COM GALERIA DE IMAGENS CORRIGIDO -->
+    <header class="hero-header">
+        <!-- Slides da galeria corrigidos -->
+        <div class="header-slide active" style="background-image: url('https://blog.uber-cdn.com/cdn-cgi/image/width=2160,quality=80,onerror=redirect,format=auto/wp-content/uploads/2019/05/Obelisco-do-Ibirapuera.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://static.mundoeducacao.uol.com.br/mundoeducacao/2021/01/avenida-paulista.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://www.prefeitura.sp.gov.br/cidade/secretarias/subprefeituras/upload/se/visita-guiada.jpeg');"></div>
+        <div class="header-slide" style="background-image: url('https://www.ipatrimonio.org/wp-content/uploads/2013/12/Monumento_a_las_Banderas_S%C3%A3o_Paulo_Brasil_The-Photographer.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://blog.uber-cdn.com/cdn-cgi/image/width=2160,quality=80,onerror=redirect,format=auto/wp-content/uploads/2019/05/Monumentos-de-S%C3%A3o-Paulo-1024x512.png');"></div>
+        <div class="header-slide" style="background-image: url('https://offloadmedia.feverup.com/saopaulosecreto.com/wp-content/uploads/2025/01/16115757/sp-1024x576.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://images.adsttc.com/media/images/54dc/b593/e58e/ce12/0700/00aa/large_jpg/Photo1_Header.jpg?1423750542');"></div>
+        <div class="header-slide" style="background-image: url('https://www.progen.com.br/wp-content/uploads/2024/10/mercado-livre-arena-pacaembu.png');"></div>
+        <div class="header-slide" style="background-image: url('https://hotelmegapolo.com.br/wp-content/uploads/2024/04/Visite-o-Parque-Ibirapuera-em-Sao-Paulo.webp');"></div>
+        <div class="header-slide" style="background-image: url('https://spdagaroa.com.br/wp-content/uploads/2019/12/paulistacultural_spdagaroa_rafagushi_web.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://s2.static.brasilescola.uol.com.br/be/2023/01/avenida-paulista.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://blog.hcchotels.com.br/wp-content/uploads/2024/08/O-que-fazer-em-Sao-Paulo-a-noite-14-1.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://blog.123milhas.com/wp-content/uploads/2022/04/conheca-estado-sao-paulo-conexao123-3.jpg');"></div>
+        <div class="header-slide" style="background-image: url('https://blog.lelloimoveis.com.br/wp-content/uploads/2024/03/12.03-Bairros-do-centro-de-SP-scaled.jpeg');"></div>
 
-<!-- CONTAINER PRINCIPAL -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f7fa">
-    <tr>
-        <td align="center" style="padding: 0;">
-            <!-- LARGURA FIXA 475px - MESMA LARGURA PARA TUDO -->
-            <table width="475" border="0" cellspacing="0" cellpadding="0" style="width: 475px;">
-                
-                <!-- IMAGEM DO HEADER - LARGURA EXATA 475px -->
-                <tr>
-                    <td width="475" style="width: 475px; padding: 0;">
-                        <img src="https://prefeitura.sp.gov.br/documents/10957549/26160037/CAPA+clipping-02.png/c4bfe989-7c42-0157-68b9-9b3b0eb22a60?version=2.0&t=1758721490838&imageThumbnail=1=1" 
-                             width="475" 
-                             style="display: block; width: 475px; height: auto;"
-                             alt="Clipping CGM">
-                    </td>
-                </tr>
-
+        <!-- Overlay escuro -->
+        <div class="header-overlay"></div>
+        
+        <!-- Conteúdo do cabeçalho -->
+        <div class="container header-content">
+            <!-- Logo da CGM -->
+            <div class="logo-container">
+                <img src="CONTROLADORIA_GERAL_DO_MUNICÍPIO_CENTRALIZADO_FUNDO_ESCURO (1).png" alt="Logo CGM" class="img-fluid">
+            </div>
             
-                <!-- SEÇÃO DE NOTÍCIAS - MESMA LARGURA 475px -->
-                <tr>
-                    <td width="475" style="width: 475px; background-color: #eaecee; padding: 20px;">
-                        
-                        <!-- TÍTULO DA SEÇÃO -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px;">
-                            <tr>
-                                <td align="center" style="padding-bottom: 20px;">
-                                    <h2 style="font-size: 20px; font-weight: 700; color: #2d3748; margin: 0; padding-bottom: 10px; border-bottom: 2px solid #0052cc; text-align: center; font-family: Dm sans-serif, Arial, sans-serif;">
-                                        ÚLTIMAS NOTÍCIAS
-                                    </h2>
-                                </td>
-                            </tr>
-                        </table>
+            <h1 class="hero-title">Clipping CGM</h1>
+            <p class="hero-subtitle">Seu boletim diário com as principais notícias do dia!</p>
+        </div>
+    </header>
+ 
+    <!-- SEÇÃO DE NOTÍCIAS -->
+    <section class="news-section">
+        <div class="container">
+            <h2 class="section-title">ÚLTIMAS NOTÍCIAS</h2>
+            <div class="news-grid">
+                <!-- Notícia 1 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">Ministério Público de São Paulo autoriza realização de dois grandes eventos anuais na Avenida Paulista</h3>
+                        <div class="news-meta">
+                            <span class="news-source">RÁDIO BANDNEWS FM 96,9</span>
+                            <span class="news-date">12/08/2026</span>
+                        </div>
+                        <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF02000000738EE9E3DE24C1011F41E30DAC5823E99E9931B7C12C063A672C01C97CBC821984EB69586692DD346CC9C49965EAF0112D2F7DC31909261445E51DD0E20B438F4A5704B2B42D48D5B34DE8620513FE3F" class="stretched-link"></a>
+                    </div>
+                </div>
+                
+                <!-- Notícia 2 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">Prefeitura de São Paulo avalia exigências do termo de ajustamento de conduta para shows internacionais</h3>
+                        <div class="news-meta">
+                            <span class="news-source">RÁDIO TMC 100,1 FM</span>
+                            <span class="news-date">12/08/2026</span>
+                        </div>
+                        <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF020000006A7E2655CCAAFE09AB08D280883A97656DD1A07C54E4B9F1AE3E195A71B06996FC40B898E56791097D446768F210CEEA5FA2AF1B21C6380977D1FCE040E0E299BD1C68B479C79BBD847589C9735829DE" class="stretched-link"></a>
+                    </div>
+                </div>
 
-                        <!-- NOTÍCIA 1 - LARGURA FIXA 435px (475 - 40px de padding) -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                       Vacinação contra o sarampo está em cinco estações do Metrô
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">ESTADÃO EXPRESSO/SÃO PAULO</strong> - 11/08/2026 às 00h00
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 0px; margin-bottom: 50px; font-family: Arial, sans-serif;">CIDADE</span>
-                                    </p>
-                                    <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF02000000A06CF69001D3C972957E82B7DF1BA90F52BB52CC5BCA8E24147447E64FBAA381D104CF5A7CA9037171A3E8C0C6E50E9E468A2051A202067774D550FE1B3F81C37E54975A6E95D04781BFA7C09FBFB697"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                <!-- Notícia 3 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">Prefeitura assina contrato para a revitalização do Largo de S. Francisco</h3>
+                        <div class="news-meta">
+                            <span class="news-source">O ESTADO DE S.PAULO</span>
+                            <span class="news-date">12/08/2026</span>
+                        </div>
+                        <a href="https://bookcontent.boxnet.com.br/Visualizar/?b=5790506&n=903699853&p=4134&pmvc=2117" class="stretched-link"></a>
+                    </div>
+                </div>
 
-                        <!-- NOTÍCIA 2 -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                       Smart Sampa auxilia GCM em 6 mil prisões em flagrante
-                                    </h3>
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">JORNAL ESTAÇÃO/FREE SÃO PAULO/ZONA NORTE/SÃO PAULO</strong> - 11/08/2026
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-family: Arial, sans-serif;" SEGURANÇA
-                                    </p>
-                                    <a href="https://bookcontent.boxnet.com.br/Visualizar/?b=5787864&n=903426629&p=4134&pmvc=2117"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                <!-- Notícia 4 -->
+                <div class="news-card"> 
+                    <div class="news-body">
+                        <h3 class="news-title">Prefeitura de São Paulo amplia pontos de vacinação após aumento de casos de sarampo; veja lista</h3>
+                        <div class="news-meta">
+                            <span class="news-source">RÁDIO CBN FM 90,5</span>
+                            <span class="news-date">12/08/2026</span>
+                        </div>
+                        <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF0200000072A45978FEE18230E9F5A9BFB62404E21891B605E826412C7BDA2859139414558EB963D14FC335EB31E06CDC7FB8CF8775EE1790F3A5BB9A94B83269FEAA030DFD9DDDDF5B9171870BACAA72788B8ADA" class="stretched-link"></a>
+                    </div>
+                </div>
 
-                        <!-- NOTÍCIA 3 -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', Arial, sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                     Falha de energia causa lentidão na linha 12-safira de trens de São Paulo
-                                    </h3>
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">FOLHA DE S.PAULO ONLINE<strong> - 11/08/2026 
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-family: Arial, sans-serif;">CIDADE
-                                    </p>
-                                    <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF0200000009BBCAAAB1C419D42C558E96878CEF4E2F2465573138BBD711EE0576BEA7A10C7CA2279E4A4E7007C629D146AC6298787E3329941FA035F1CF07A70C065502F863F4715AEDF0246564058A7B249D4129"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                 <!-- Notícia 5 -->
+                <div class="news-card"> ''
+                    <div class="news-body">
+                        <h3 class="news-title">Temperatura volta a subir em São Paulo e pode chegar a 35° nesta quarta (12) no interior</h3>
+                        <div class="news-meta">
+                            <span class="news-source">FOLHA DE S.PAULO ONLINE</span>
+                            <span class="news-date">12/08/2026</span>
+                        </div>
+                        <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF02000000B85B6750F4B0D6AAC766C18B62831A82339CF881B58F8786DEE30C10B68D277F422866E1B6E6E164C8D8BC47B09004876D972989B813CD10E16F21C04E67BB511B227394D92CA102801D5613AFC240ED" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <!-- NOTÍCIA 4 -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', Arial, sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                     Museu Afro Brasil Emanoel Araujo leva debates sobre cultura, inovação, empreendedorismo e economia criativa…
-                                    </h3>
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">JORNAL DO BRÁS/SÃO PAULO</strong> -  10/08/2026 às 19h27
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-family: Arial, sans-serif;">CULTURA>
-                                    </p>
-                                    <a href="https://bookcontent.boxnet.com.br/Visualizar/?b=5764576&n=901153791&p=4134&pmvc=2117"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+    <!-- NOTÍCIAS CGM -->
+    <section class="news-section">
+        <div class="container">
+            <h2 class="section-title">NOTÍCIAS CGM</h2>
+            <div class="news-grid">
 
-                       
-                        <!-- NOTÍCIA 5 -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', Arial, sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                       Previsão do tempo
-                                    </h3>
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">BOM DIA SP/TV GLOBO/SÃO PAULO</strong> -11/08/2026 às 07h47
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-family: Arial, sans-serif;"> TEMPO
-                                    </p>
-                                    <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF020000007CA4FEC8C0BA0C48FE1C62F82D2C3E8E55C9FB478CD5278033C3FD5A223FE64D9F47BBFA77B8FFCAA99BA10AC153FC35055B3DADF88D8056E8C0E6E35478C1B0C860FC9128F1864248EBD15C01791BDE"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                        
-                         <!-- NOTÍCIA 6 -->
-                        <table width="435" border="0" cellspacing="0" cellpadding="0" align="center" style="width: 435px; background-color: #ffffff; border: 1px solid #e2e8f0; margin-bottom: 15px;">
-                            <tr>
-                                <td style="padding: 15px;">
-                                    <h3 style="font-size: 16px; color: #2d3748; margin: 0 0 8px 0; line-height: 1.4; text-align: left; font-family: 'poppins', Arial, sans-serif; font-weight: 700; letter-spacing: 0.5px;">
-                                       Gerp: violência é o maior problema do país para 46% da população
-                                    </h3>
-                                    <p style="font-size: 13px; color: #718096; margin: 0 0 10px 0; text-align: left; font-family: 'Century Gothic', Arial, sans-serif;">
-                                        <strong style="font-family: 'Century Gothic', Arial, sans-serif;">Jovem Pan/Web </strong> -11/08/2026 às 08h17
-                                        <span style="background-color: #edf2f7; color: #4a5568; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-family: Arial, sans-serif;"> SEGURANÇA
-                                    </p>
-                                    <a href="https://visualizacao.boxnet.com.br/#/?t=00DDC949574BA14ABD49C962CBECD7EF02000000D4BC1E44B8332EACE55C56511E4E6EFC2A331019CA7DC3F60B46A61461DFF9F8DA14813A1CC9573310DA8BDA09D04DF1929A87D8DC8A34667EFE8712F140614F4861F42916A252757720E5B6E44D519A"
-                                       style="color: #ffffff; text-decoration: none; background-color: #2d3748; padding: 8px 16px; font-size: 12px; font-weight: 600; display: inline-block; border-radius: 3px; font-family: Arial, sans-serif;">
-                                        Clique aqui
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                     <!-- Notícia CGM 1 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">MPSP analisa recursos para liberação de megashows na Avenida Paulista</h3>
+                        <div class="news-meta">
+                            <img src="https://images.seeklogo.com/logo-png/11/1/prefeitura-de-sao-paulo-logo-png_seeklogo-111572.png" alt="CGM" class="news-logo">
+                            <span class="news-source">CGM</span>
+                            <span class="news-date">21/07/2026</span>
+                        </div>
+                        <a href="https://prefeitura.sp.gov.br/web/controladoria_geral/w/cgm-sp-realiza-abertura-do-ano-letivo-2026-do-centro-de-forma%C3%A7%C3%A3o-em-controle-interno" class="stretched-link"></a>
+                    </div>
+                </div>
 
-                    </td>
-                </tr>
+                <!-- Notícia CGM 2 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">CGM-SP participa da 2ª Conferência Internacional de Integridade Pública e Privada</h3>
+                        <div class="news-meta">
+                            <img src="https://images.seeklogo.com/logo-png/11/1/prefeitura-de-sao-paulo-logo-png_seeklogo-111572.png" alt="CGM" class="news-logo">
+                            <span class="news-source">CGM</span>
+                            <span class="news-date">13/05/2026</span>
+                        </div>
+                        <a href=https://prefeitura.sp.gov.br/web/controladoria_geral/w/cgm-sp-participa-da-2%C2%AA-confer%C3%AAncia-internacional-de-integridade-p%C3%BAblica-e-privada"></a>
+                    </div>
+                </div>
 
-                <!-- FOOTER - MESMA LARGURA 475px -->
-                <tr>
-                    <td width="475" style="width: 475px; background-color: #2d3748; color: #cbd5e0; padding: 20px; text-align: center;">
-                        <p style="margin: 0 0 8px; color: #cbd5e0; font-size: 14px; font-family: Arial, sans-serif;">Clipping CGM - Prefeitura de São Paulo</p>
-                        <p style="margin: 0; color: #cbd5e0; font-size: 14px; font-family: Arial, sans-serif;">
-                            Esta é uma newsletter diária. Para mais informações, 
-                            <a href="https://prefeitura.sp.gov.br/web/controladoria_geral" style="color: #90cdf4; text-decoration: none; font-family: Arial, sans-serif;">acesse nosso site</a>.
-                        </p>
-                    </td>
-                </tr>
+                  <!-- Notícia CGM 3 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">CGM-SP e CGU firmam acordo de cooperação para fortalecer ações de integridade e transparência</h3>
+                        <div class="news-meta">
+                            <img src="https://images.seeklogo.com/logo-png/11/1/prefeitura-de-sao-paulo-logo-png_seeklogo-111572.png" alt="CGM" class="news-logo">
+                            <span class="news-source">CGM</span>
+                            <span class="news-date">14/05/2025</span>
+                        </div>
+                        <a href="https://prefeitura.sp.gov.br/web/controladoria_geral/w/cgm-sp-e-cgu-firmam-acordo-de-coopera%C3%A7%C3%A3o-para-fortalecer-a%C3%A7%C3%B5es-de-integridade-e-transpar%C3%AAncia" class="stretched-link"></a>
+                    </div>
+                </div>
 
-            </table>
-        </td>
-    </tr>
-</table>
+                            <!-- Notícia CGM 2 -->
+                <div class="news-card">
+                    <div class="news-body">
+                        <h3 class="news-title">CGM-SP passa a integrar Rede de Transparência e Acesso à Informação como membro pleno</h3>
+                        <div class="news-meta">
+                            <img src="https://images.seeklogo.com/logo-png/11/1/prefeitura-de-sao-paulo-logo-png_seeklogo-111572.png" alt="CGM" class="news-logo">
+                            <span class="news-source">CGM</span>
+                            <span class="news-date">15/05/2026</span>
+                        </div>
+                        <a href="https://prefeitura.sp.gov.br/web/controladoria_geral/w/cgm-sp-passa-a-integrar-rede-de-transpar%C3%AAncia-e-acesso-%C3%A0-informa%C3%A7%C3%A3o-como-membro-pleno"></a>
+                    </div>
+                </div>
+    </section>
+
+    <!-- DESTAQUES INSTITUCIONAIS -->
+    <section class="highlights-section">
+        <div class="container">
+            <h2 class="section-title">DESTAQUES INSTITUCIONAIS</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div class="highlight-image" style="background-image: url('https://capital.sp.gov.br/documents/10957549/10957619/CONTROLADORIA_GERAL_DO_MUNIC%C3%8DPIO_HORIZONTAL_FUNDO_CLARO_1665751692.png/301f821d-7a9a-9a92-1c13-f945645f7528?version=1.0&t=1719580790576'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #f8f9fa;"></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Site CGM</h3>
+                            <p class="highlight-text">Acesse o site oficial da Controladoria Geral do Município</p>
+                            <a href="https://capital.sp.gov.br/web/controladoria_geral" class="btn btn-highlight">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div class="highlight-image" style="background-image: url('https://capital.sp.gov.br/documents/d/controladoria_geral/aqui-tem-ouvidoria-banner-2-png'); background-size: cover; background-position: center;"></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Ouvidoria</h3>
+                            <p class="highlight-text">Faça sua denúncia, reclamação ou sugestão</p>
+                            <a href="https://capital.sp.gov.br/web/ouvidoria/w/fale_com_a_ouvidoria/227268" class="btn btn-highlight">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="highlight-card">
+                        <div class="highlight-image" style="background-image: url('https://capital.sp.gov.br/documents/d/controladoria_geral/cursos-gratis-banner-7-png'); background-size: cover; background-position: center;"></div>
+                        <div class="highlight-content">
+                            <h3 class="highlight-title">Cursos CFCI</h3>
+                            <p class="highlight-text">Participe dos nossos cursos gratuitos</p>
+                            <a href="https://capital.sp.gov.br/web/controladoria_geral/w/coordenadoria_de_promocao_da_integridade/cursos-destaques" class="btn btn-highlight">Participar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-logo">Controlaria Geral do Município</div>
+                    <p class="mb-4"></p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/cgmsp/?locale=pt_BR"><i class="fab fa-facebook"></i></a>
+                        <a href="https://x.com/SpCgm"><i class="fab fa-x"></i></a>
+                        <a href="https://www.instagram.com/cgmsp/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/controladoria-geral-do-munic%C3%ADpio---cgm/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@cgmsaopaulo"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3"></h5>
+                    <ul class="footer-links">
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">Contato</h5>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> Viaduto do Chá, 15 - Centro<br>São Paulo - SP</p>
+                    <p><i class="fas fa-phone me-2"></i> (11) 3113-8236</p>
+                    <p><i class="fas fa-envelope me-2"></i> comunicacaocgm@prefeitura.sp.gov.br</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="mb-0">© 2025 Controlaria Geral do Município de São Paulo - Assessoria de Comunicação. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Galeria de imagens no cabeçalho
+        const slides = document.querySelectorAll('.header-slide');
+        let currentSlide = 0;
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Troca de slide a cada 5 segundos
+        setInterval(nextSlide, 5000);
+        
+        // Mostra uma imagem aleatória ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            const randomIndex = Math.floor(Math.random() * slides.length);
+            showSlide(randomIndex);
+        });
+    </script>
 </body>
 </html>
+
+
